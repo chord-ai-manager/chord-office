@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Chord's add-in page holds only the buttons. Questions and documents go from Office to Chord on
+         this computer (127.0.0.1), never to this website. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://appsforoffice.microsoft.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' http://127.0.0.1:47820 http://127.0.0.1:47821 http://127.0.0.1:47822 https:; frame-src https:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Chord</title>
+    <!-- Office's own script, from Microsoft, as Microsoft requires. -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link rel="stylesheet" href="taskpane.css" />
+  </head>
+  <body>
+    <main class="pane">
+      <header class="top">
+        <img src="assets/icon-32.png" alt="" width="20" height="20" />
+        <h1>Chord</h1>
+      </header>
+
+      <section id="connecting" class="screen">
+        <p class="muted">Looking for Chord on this computer…</p>
+      </section>
+
+      <section id="offline" class="screen" hidden>
+        <p>Chord isn't answering. Open Chord on this computer, and check that it's added to Office in Settings, Your setup, Office.</p>
+        <button type="button" id="retry" class="btn">Try again</button>
+      </section>
+
+      <section id="pairing" class="screen" hidden>
+        <h2>Pair with Chord</h2>
+        <p class="muted">In Chord, open Settings, Your setup, Office, and type the pairing code it shows. You only do this once.</p>
+        <form id="pair-form" class="stack" autocomplete="off">
+          <label for="code">Pairing code</label>
+          <input id="code" name="code" inputmode="text" maxlength="9" placeholder="ABCD-2345" spellcheck="false" />
+          <button type="submit" class="btn btn--primary" id="pair-button">Pair</button>
+        </form>
+        <p id="pair-status" class="status" role="status"></p>
+      </section>
+
+      <section id="asking" class="screen" hidden>
+        <form id="ask-form" class="stack">
+          <label for="question">Ask Chord</label>
+          <textarea id="question" rows="4" placeholder="Rewrite this paragraph more simply"></textarea>
+          <div class="row">
+            <label for="target">AI</label>
+            <select id="target">
+              <option value="auto">Auto</option>
+              <option value="claude">Claude</option>
+              <option value="codex">ChatGPT</option>
+              <option value="gemini">Gemini</option>
+            </select>
+          </div>
+          <fieldset class="choices">
+            <legend>Send along</legend>
+            <label><input type="radio" name="context" value="selection" checked /> <span id="selection-label">The selection</span></label>
+            <label><input type="radio" name="context" value="document" /> <span id="document-label">The whole document</span></label>
+            <label><input type="radio" name="context" value="none" /> Nothing</label>
+          </fieldset>
+          <button type="submit" class="btn btn--primary" id="ask-button">Ask</button>
+        </form>
+        <p id="ask-status" class="status" role="status"></p>
+        <div id="answer-box" class="answer" hidden>
+          <p class="muted" id="answer-by"></p>
+          <div id="answer" class="answer-text" tabindex="0"></div>
+          <div class="row actions">
+            <button type="button" class="btn" id="insert">Insert</button>
+            <button type="button" class="btn" id="replace">Replace selection</button>
+          </div>
+          <p id="put-status" class="status" role="status"></p>
+        </div>
+        <p class="foot"><button type="button" class="link" id="unpair">Pair again</button></p>
+      </section>
+    </main>
+    <script src="office-text.js"></script>
+    <script src="taskpane.js"></script>
+  </body>
+</html>
